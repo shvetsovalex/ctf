@@ -54,7 +54,9 @@ Unfortunately, automatic scanners will not give anything here. We need professio
 
 WoW! The third one retrieve status code 200! So, there is injection in chat table name.
 
-```SELECT * FROM `chat_<chatId>````
+```
+SELECT * FROM `chat_<chatId>`
+```
 
 This is UNION based injection and we can see output. 
 After a difficult dumping of the database structure, we find out the login and password hash of the admin.
